@@ -1,0 +1,25 @@
+{
+    "name": "identifydigital/laravel-preferences",
+    "description": "A laravel package used for storing dynamic preferences on your application",
+    "authors": [
+        {
+            "name": "Josh Thackeray",
+            "email": "josh@identifywebdesign.co.uk"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "IdentifyDigital\\Preferences\\PreferencesServiceProvider"
+            ],
+            "aliases": {
+                "Preference": "IdentifyDigital\\Preferences\\Preference"
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "IdentifyDigital\\Preferences\\": "src/"
+        }
+    }
+}

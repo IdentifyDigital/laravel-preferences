@@ -20,7 +20,7 @@ class CreatePreferencesTable extends Migration
             $table->string('key')->nullable();
             $table->string('value');
             $table->smallInteger('type')->nullable();
-            $table->bigInteger('user_group_id')->unsigned();
+            $table->bigInteger('user_group_id')->unsigned()->nullable();
         });
     }
 

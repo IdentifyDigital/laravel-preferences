@@ -17,7 +17,7 @@ class PreferencesServiceProvider extends ServiceProvider
         //Loading the package migrations
         $this->loadMigrationsFrom(__DIR__.'/Migrations');
 
-        $this->app->bind('preferences', function () { return new Setting(); });
+        $this->app->bind('preference', function () { return new Setting(); });
 
     }
 

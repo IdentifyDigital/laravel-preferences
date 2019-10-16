@@ -13,7 +13,7 @@
                 "IdentifyDigital\\Preferences\\PreferencesServiceProvider"
             ],
             "aliases": {
-                "Preference": "IdentifyDigital\\Preferences\\Preference"
+                "Preference": "IdentifyDigital\\Preferences\\Facades\\Preference"
             }
         }
     },

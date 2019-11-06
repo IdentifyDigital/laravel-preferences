@@ -58,7 +58,10 @@ class Setting extends Model
      */
     public function get(string $key)
     {
-        $preference = self::where('key', '=', $key)->first();
+        $group_namespace = config('preferences.group_namespace');
+        $preference = self::where('key', '=', $key)->when($group_namespace, function ($query, $namespace) {
+            return $query->where('user_group_id', '=', $namespace::currentGroup()->getKey());
+        })->first();
 
         if(!$preference)
             return null;
@@ -76,8 +79,11 @@ class Setting extends Model
      */
     public function set(string $key, $value, int $type = null)
     {
+        $group_namespace = config('preferences.group_namespace');
+
         return self::updateOrCreate([
-            'key' => $key
+            'key' => $key,
+            'user_group_id' => $group_namespace ? $group_namespace::currentGroup()->getKey() : null
         ], [
             'value' => $value,
             'key' => $key

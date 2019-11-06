@@ -19,6 +19,13 @@ class PreferencesServiceProvider extends ServiceProvider
 
         $this->app->bind('preference', function () { return new Setting(); });
 
+        //Publishing to packages config
+        $this->publishes([
+            __DIR__.'/Config/preferences.php' => config_path('preferences.php'),
+        ]);
+        $this->mergeConfigFrom(
+            __DIR__.'/Config/preferences.php', 'preferences'
+        );
     }
 
     /**

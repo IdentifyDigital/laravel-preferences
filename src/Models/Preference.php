@@ -54,13 +54,19 @@ class Setting extends Model
      * Returns the value of the selected $key.
      *
      * @param string $key
+     * @param int $user_group_id
      * @return Carbon|int|mixed|string|null
      */
-    public function get(string $key)
+    public function get($key, $user_group_id = null)
     {
-        $group_namespace = config('preferences.group_namespace');
-        $preference = self::where('key', '=', $key)->when($group_namespace, function ($query, $namespace) {
-            return $query->where('user_group_id', '=', $namespace::currentGroup()->getKey());
+        $preference = self::where('key', '=', $key)->when($user_group_id, function ($query, $group_id) {
+            return $query->where('user_group_id', '=', $group_id);
+        }, function ($query) {
+            $group_namespace = config('preferences.group_namespace');
+
+            return $query->when($group_namespace, function ($query, $namespace) {
+                return $query->where('user_group_id', '=', $namespace::currentGroup()->getKey());
+            });
         })->first();
 
         if(!$preference)
@@ -75,15 +81,16 @@ class Setting extends Model
      * @param string $key
      * @param $value
      * @param int $type
-     * @return Preference
+     * @param null $user_group_id
+     * @return self
      */
-    public function set(string $key, $value, int $type = null)
+    public function set($key, $value, $type = null, $user_group_id = null)
     {
         $group_namespace = config('preferences.group_namespace');
 
         return self::updateOrCreate([
             'key' => $key,
-            'user_group_id' => $group_namespace ? $group_namespace::currentGroup()->getKey() : null
+            'user_group_id' => $user_group_id ? $user_group_id : ($group_namespace ? $group_namespace::currentGroup()->getKey() : null)
         ], [
             'value' => $value,
             'key' => $key

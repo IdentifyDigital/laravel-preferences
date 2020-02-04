@@ -5,8 +5,8 @@ namespace IdentifyDigital\Preferences\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static void set(string $key, $value, int $type = 1)
- * @method static string get(string $key)
+ * @method static void set(string $key, $value, int $type = 1, int $user_group_id = null)
+ * @method static string get(string $key, int $user_group_id = null)
  *
  * @see \IdentifyDigital\Preferences\Models\Preference
  */

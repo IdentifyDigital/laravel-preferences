@@ -26,7 +26,7 @@ class Setting extends Model
      *
      * @var array
      */
-    protected $fillable = ['key', 'value', 'type'];
+    protected $fillable = ['key', 'value', 'type', 'user_group_id'];
 
     /**
      * Alters the return of the value to be the correct type.
@@ -65,7 +65,9 @@ class Setting extends Model
             $group_namespace = config('preferences.group_namespace');
 
             return $query->when($group_namespace, function ($query, $namespace) {
-                return $query->where('user_group_id', '=', $namespace::currentGroup()->getKey());
+                if($namespace::currentGroup() != null) {
+                    return $query->where('user_group_id', '=', $namespace::currentGroup()->getKey());
+                }
             });
         })->first();
 
@@ -90,7 +92,7 @@ class Setting extends Model
 
         return self::updateOrCreate([
             'key' => $key,
-            'user_group_id' => $user_group_id ? $user_group_id : ($group_namespace ? $group_namespace::currentGroup()->getKey() : null)
+            'user_group_id' => $user_group_id ? $user_group_id : ($group_namespace && $group_namespace::currentGroup() ? $group_namespace::currentGroup()->getKey() : null)
         ], [
             'value' => $value,
             'key' => $key
